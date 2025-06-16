@@ -1,5 +1,5 @@
 #!/bin/bash
-# 🛠 Optimize Linux Server for Backhall + Xray/VLESS + TCP Performance
+echo "🛠 Optimize Linux Server for Backhall + Xray/VLESS + TCP Performance "
 
 echo "🔧 Applying Kernel & Network Optimizations..."
 
