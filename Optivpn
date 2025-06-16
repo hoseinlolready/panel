@@ -1,0 +1,35 @@
+#!/bin/bash
+# 🛠 Optimize Linux Server for Backhall + Xray/VLESS + TCP Performance
+
+echo "🔧 Applying Kernel & Network Optimizations..."
+
+# Enable BBR
+echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+
+# TCP Fast Open
+echo "net.ipv4.tcp_fastopen=3" >> /etc/sysctl.conf
+
+# Increase Buffer Sizes
+echo "net.core.rmem_max=2500000" >> /etc/sysctl.conf
+echo "net.core.wmem_max=2500000" >> /etc/sysctl.conf
+
+# Apply immediately
+sysctl -p
+
+echo "✅ Kernel tweaks applied."
+
+# Set file limits
+echo "* soft nofile 1048576" >> /etc/security/limits.conf
+echo "* hard nofile 1048576" >> /etc/security/limits.conf
+
+sed -i '/^#DefaultLimitNOFILE/c\DefaultLimitNOFILE=1048576' /etc/systemd/system.conf
+sed -i '/^#DefaultLimitNOFILE/c\DefaultLimitNOFILE=1048576' /etc/systemd/user.conf
+
+# Enable settings now
+ulimit -n 1048576
+
+echo "✅ File limit settings updated."
+
+# Reload systemd and reboot warning
+echo -e "\n⚠️ Please reboot the server to fully apply changes!"
