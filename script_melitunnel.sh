@@ -1,5 +1,5 @@
 #!/bin/bash
-
+apt update && apt install unzip curl
 clear
 echo "=== Meli Tunnel ==="
 echo "[1] Start Server"
@@ -18,7 +18,6 @@ download_and_unzip() {
 if [ "$CHOICE" = "1" ]; then
     clear
     echo "=== Meli Tunnel - Server ==="
-    read -p "Enter port to listen: " SPORT
     read -p "Enter password: " PASS
     download_and_unzip "https://github.com/hoseinlolready/panel/raw/refs/heads/main/pingtunnel.zip"
     echo "[+] Running server in background..."
@@ -29,9 +28,10 @@ elif [ "$CHOICE" = "2" ]; then
     read -p "Enter server IP: " SERVER_IP
     read -p "Enter server port: " SERVER_PORT
     read -p "Enter local listen port: " LOCAL_PORT
+    read -p "Enter the password: " PASSWORD
     download_and_unzip "http://193.39.9.36/pingtunnel.zip"
     echo "[+] Running client in background..."
-    ./pingtunnel -type client -l ":$LOCAL_PORT" -s "$SERVER_IP" -t "$SERVER_IP:$SERVER_PORT" -tcp 1 -key "123456" -tcp_bs 524288 -tcp_mw 5000 -maxprt 20 -maxprb 100 -timeout 30 -nolog 1 -noprint 1 &
+    ./pingtunnel -type client -l ":$LOCAL_PORT" -s "$SERVER_IP" -t "$SERVER_IP:$SERVER_PORT" -tcp 1 -key "$PASSWORD" -tcp_bs 524288 -tcp_mw 5000 -maxprt 20 -maxprb 100 -timeout 30 -nolog 1 -noprint 1 &
 else
     echo "Invalid option"
 fi
